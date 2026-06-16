@@ -1,3 +1,14 @@
+---
+title: AI Customer Support Agent
+emoji: 🤖
+colorFrom: green
+colorTo: emerald
+sdk: gradio
+sdk_version: "5.0.0"
+app_file: app.py
+pinned: false
+---
+
 # AI Customer Support Agent
 
 ![Python](https://img.shields.io/badge/python-3.12+-blue?logo=python&logoColor=white)

@@ -15,7 +15,7 @@ import os
 
 import pytest
 
-from src.config import FAISS_INDEX_PATH, KNOWLEDGE_BASE_DIR
+from src.config import FAISS_INDEX_PATH
 from src.retriever import (
     build_customer_support_retriever,
     load_knowledge_documents,

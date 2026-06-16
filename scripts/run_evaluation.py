@@ -22,6 +22,10 @@ import os
 import sys
 from pathlib import Path
 from typing import Any, Dict, Optional
+from dotenv import load_dotenv
+from src.retriever import build_customer_support_retriever
+from src.evaluation.rag_eval import run_rag_evaluation
+from src.evaluation.e2e_eval import run_e2e_evaluation
 
 # Ensure the project root is on sys.path so local modules can be imported.
 
@@ -29,13 +33,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 os.chdir(PROJECT_ROOT)  # relative paths (knowledge-base/, faiss_index/) resolve correctly
 
-from dotenv import load_dotenv
 load_dotenv(override=True)
-
-from src.retriever import build_customer_support_retriever
-from src.evaluation.rag_eval import run_rag_evaluation
-from src.evaluation.e2e_eval import run_e2e_evaluation
-
 
 # Main entry point
 

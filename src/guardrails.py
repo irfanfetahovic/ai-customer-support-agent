@@ -10,8 +10,16 @@ from src.config import INPUT_MAX_LENGTH, INJECTION_PATTERNS
 # Tier 1 focuses on prompt injection; Tier 3 (Moderation API) focuses on harmful content.
 _INJECTION_RE = re.compile("|".join(INJECTION_PATTERNS), re.IGNORECASE)
 
-# OpenAI Moderation API client (Tier 3)
-_moderation_client = AsyncOpenAI()
+# OpenAI Moderation API client (Tier 3) — initialized lazily so importing this
+# module does not require OPENAI_API_KEY to be set (e.g. during unit tests).
+_moderation_client: AsyncOpenAI | None = None
+
+
+def _get_moderation_client() -> AsyncOpenAI:
+    global _moderation_client
+    if _moderation_client is None:
+        _moderation_client = AsyncOpenAI()
+    return _moderation_client
 
 
 def check_input_guardrails(message: str) -> Optional[str]:
@@ -45,7 +53,7 @@ async def check_moderation(text: str) -> Optional[str]:
     Call the OpenAI Moderation API (Tier 3). Returns a block reason string if
     the text is flagged for harmful content, or None if it is safe.
     """
-    result = await _moderation_client.moderations.create(input=text)
+    result = await _get_moderation_client().moderations.create(input=text)
     output = result.results[0]
     if output.flagged:
         flagged_cats = [cat for cat, flagged in output.categories if flagged]

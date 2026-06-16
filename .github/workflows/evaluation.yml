@@ -1,0 +1,92 @@
+name: Offline Evaluation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "knowledge-base/**"
+      - "mcp_server/**"
+      - "scripts/**"
+      - "notebooks/customer_support.ipynb"
+      - "pyproject.toml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "knowledge-base/**"
+      - "mcp_server/**"
+      - "scripts/**"
+      - "notebooks/customer_support.ipynb"
+      - "pyproject.toml"
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: "Evaluation suite to run"
+        required: false
+        default: "both"
+        type: choice
+        options: [both, rag, e2e]
+      fail_threshold:
+        description: "Fail if any aggregate metric is below this value (0.0–1.0)"
+        required: false
+        default: "0.7"
+
+jobs:
+  evaluate:
+    name: Run evaluation suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write  # needed to commit results back to the repo
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -e .
+
+      # The FAISS index is not committed to the repo.
+      # Restore a cached index keyed on the knowledge-base content hash so we
+      # avoid rebuilding (and paying for embedding API calls) on every run.
+      - name: Restore FAISS index cache
+        id: faiss-cache
+        uses: actions/cache@v4
+        with:
+          path: faiss_index/
+          key: faiss-index-${{ hashFiles('knowledge-base/**') }}
+
+      - name: Run evaluations
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          mkdir -p results
+          python scripts/run_evaluation.py \
+            --suite ${{ inputs.suite || 'both' }} \
+            --fail-threshold ${{ inputs.fail_threshold || '0.7' }} \
+            --output results/latest.json
+
+      # Commit results back to the repo so scores are visible without
+      # downloading an artifact. Only runs on push to main (not PRs —
+      # forks don't have write access).
+      - name: Commit evaluation results
+        if: github.event_name != 'pull_request'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add results/latest.json
+          git diff --cached --quiet || git commit -m "chore: update evaluation results [skip ci]"
+          git push
+
+      - name: Upload evaluation results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-results-${{ github.run_id }}
+          path: results/latest.json
+          retention-days: 30

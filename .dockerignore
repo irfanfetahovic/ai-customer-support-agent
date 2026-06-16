@@ -1,0 +1,38 @@
+# Version control
+.git
+.gitignore
+
+# Python cache & build artifacts
+__pycache__
+*.py[cod]
+*.pyo
+.pytest_cache
+.ruff_cache
+
+# Virtual environment
+.venv
+
+# Development-only files
+notebooks/
+scripts/
+tests/
+docs/
+ROADMAP.md
+
+# Secrets — never bake into the image
+.env
+*.env
+
+# Runtime-generated files (written at runtime, not needed at build time)
+memory.db
+memory.db-shm
+memory.db-wal
+
+# Editor / OS artifacts
+.vscode
+.idea
+*.DS_Store
+Thumbs.db
+
+# uv lock file not needed in the final image (already resolved in builder stage)
+uv.lock

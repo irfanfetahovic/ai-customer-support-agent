@@ -33,4 +33,4 @@ jobs:
       - name: Unit tests
         run: pytest tests/unit/ -v
 
-# To make this block merges, go to GitHub → Settings → Branches → add a branch rule for main → enable Require status checks to pass → select Lint & unit tests.
+# To make this block merges pull requests when tests fail, go to GitHub → Settings → Branches → add a branch rule for main → enable Require status checks to pass → select Lint & unit tests.

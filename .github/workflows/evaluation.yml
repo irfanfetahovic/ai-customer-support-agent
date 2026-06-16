@@ -90,3 +90,8 @@ jobs:
           name: evaluation-results-${{ github.run_id }}
           path: results/latest.json
           retention-days: 30
+
+# Go to GitHub Settings → Secrets and variables → Actions, Click New repository secret
+# Name: OPENAI_API_KEY, Value: your OpenAI API key, Click Add secret
+
+# To make this block merges pull requests when evaluation fails, go to GitHub → Settings → Branches → add a branch rule for main → enable Require status checks to pass → select Run evaluation suite.

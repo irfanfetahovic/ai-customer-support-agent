@@ -325,7 +325,10 @@ Last run: **2026-06-16** · model: `gpt-4o-mini` · 22 RAG test cases · 9 E2E s
 
 ¹ Excluded from CI gate: individual chunks include lower-relevance noise alongside relevant ones, while context sufficiency (0.84) confirms the retrieved context as a whole is sufficient.
 
-**Notable failures (4/22):** "order tracking delay", "payment failure", "international shipping costs", "Smartwatch X features", "Wireless Earbuds Pro battery life" — these cases returned 0.0 on all generation metrics, indicating gaps in the knowledge base content rather than retrieval failures (hit rate was still 95.5%).
+**Notable failures (4/22):** "order tracking delay", "payment failure", "international shipping costs", "Smartwatch X features", "Wireless Earbuds Pro battery life" — these cases returned 0.0 on all generation metrics. Investigation shows the KB content for these topics **does exist** and is detailed; two factors contributed to the low scores:
+
+- **Stale FAISS index** — the index committed to the repo was built before some KB files were added/updated, causing retrieval misses ("order tracking" was the only case with `hit: false`). Fixed: `faiss_index/` is now excluded from git and rebuilt fresh in CI whenever the knowledge base changes.
+- **LLM judge variance** — `gpt-4o-mini` occasionally scores 0.0 on content it correctly retrieved, producing false negatives in the evaluation. These scores are expected to improve after the index rebuild and may be further improved by switching the judge to `gpt-4o`or some other better model.
 
 ### End-to-End Agent
 

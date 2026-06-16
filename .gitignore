@@ -1,3 +1,4 @@
 docs
 .env
 ROADMAP.md
+faiss_index/

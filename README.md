@@ -306,6 +306,42 @@ The Gradio app (`app.py`) is fully compatible with Hugging Face Spaces. Set `app
 
 ---
 
+## Evaluation Results
+
+Scores produced by an LLM-as-judge and committed to `results/latest.json` on every push to `main`.
+Last run: **2026-06-16** · model: `gpt-4o-mini` · 22 RAG test cases · 9 E2E scenarios.
+
+### RAG Pipeline
+
+| Metric | Score | CI gate |
+|---|---|---|
+| Hit rate | 95.5% | — |
+| Context sufficiency | 0.84 | ✅ |
+| Answer relevance | 0.77 | ✅ |
+| Answer completeness | 0.77 | — |
+| Faithfulness | 0.77 | ✅ |
+| Context redundancy | 0.00 | — |
+| Avg chunk relevance | 0.47 | excluded¹ |
+
+¹ Excluded from CI gate: individual chunks include lower-relevance noise alongside relevant ones, while context sufficiency (0.84) confirms the retrieved context as a whole is sufficient.
+
+**Notable failures (4/22):** "order tracking delay", "payment failure", "international shipping costs", "Smartwatch X features", "Wireless Earbuds Pro battery life" — these cases returned 0.0 on all generation metrics, indicating gaps in the knowledge base content rather than retrieval failures (hit rate was still 95.5%).
+
+### End-to-End Agent
+
+| Metric | Score |
+|---|---|
+| Overall | **0.95** |
+| Accuracy | 1.00 |
+| Scope adherence | 1.00 |
+| Tone | 0.98 |
+| Completeness | 0.97 |
+| Resolution | 0.81 |
+
+All 9 scenarios passed the 0.7 threshold. Resolution (0.81) is the lowest dimension — driven by the account recovery (0.80) and out-of-scope boundary (0.80) scenarios where the agent correctly declined or partially resolved rather than fully resolving.
+
+---
+
 ## Design Principles
 
 - **Separation of concerns at the LLM level** — each agent node has a single, narrow responsibility

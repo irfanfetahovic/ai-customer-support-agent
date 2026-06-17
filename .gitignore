@@ -3,3 +3,6 @@ docs
 ROADMAP.md
 faiss_index/
 mytoken
+memory.db
+memory.db-shm
+memory.db-wal

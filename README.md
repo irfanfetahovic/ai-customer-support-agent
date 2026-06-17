@@ -21,7 +21,9 @@ Built as a production-ready system: modular Python codebase, REST API, Gradio de
 
 ---
 
-## Live Demo
+## Demo Preview
+
+![AI Customer Support Agent UI](demo.png)
 
 Try the deployed version here:  
 https://huggingface.co/spaces/irfanf/ai-customer-support-agent

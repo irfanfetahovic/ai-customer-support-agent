@@ -2,7 +2,7 @@
 title: AI Customer Support Agent
 emoji: 🤖
 colorFrom: green
-colorTo: emerald
+colorTo: blue
 sdk: gradio
 sdk_version: "5.0.0"
 app_file: app.py

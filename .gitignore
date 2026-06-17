@@ -6,3 +6,11 @@ mytoken
 memory.db
 memory.db-shm
 memory.db-wal
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.uv/

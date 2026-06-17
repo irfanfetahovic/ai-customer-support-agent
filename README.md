@@ -15,11 +15,28 @@ pinned: false
 ![License](https://img.shields.io/badge/license-MIT-green)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-This is a fully functional AI customer support agent that handles customer enquiries automatically — answering questions about orders, refunds, shipping, warranties, and more — while staying accurate, professional, and safe. It connects to your knowledge base and a CRM data layer (simulated via an MCP server, swappable for a real CRM like Salesforce or Zendesk), remembers the full conversation, and checks the quality of its own answers before sending them. When it cannot resolve something, it says so clearly and escalates.
+This is a fully functional AI customer support agent that handles customer enquiries automatically — answering questions about orders, refunds, shipping, warranties, and more — while staying accurate, professional, and safe. It uses RAG, tool calling, and a self-evaluation loop to resolve customer queries with accurate, policy-grounded responses.
 
 Built as a production-ready system: modular Python codebase, REST API, Gradio demo UI, automated test suite, and a full evaluation framework to measure quality before deployment.
 
 ---
+
+## Live Demo
+
+Try the deployed version here:  
+https://huggingface.co/spaces/irfanf/ai-customer-support-agent
+
+
+## Key Features
+
+- 🔁 Multi-agent architecture (Planner → Worker → Evaluator)
+- 📚 Hybrid RAG (FAISS + BM25 + reranking)
+- 🧠 Self-evaluating responses (LLM judge loop)
+- 🔌 MCP-based CRM integration (swappable backend)
+- 🛡️ Multi-layer security guardrails
+- 💾 Persistent conversation memory (SQLite + LangGraph)
+- 📊 Offline + runtime evaluation system
+
 
 ## Business Value
 
@@ -105,6 +122,8 @@ The FAISS index is persisted to disk and loaded on startup, avoiding redundant e
 
 ### Model Context Protocol (MCP) Integration
 The CRM tooling is exposed over MCP (stdio transport) rather than being imported directly. This decouples the agent from the data layer: the MCP server can be swapped for a real CRM endpoint without changing agent code. An **explicit allowlist** (`MCP_TOOL_ALLOWLIST`) prevents the agent from calling any tool not approved at deployment time — even if the MCP server exposes additional tools in future.
+
+In this project, the CRM layer is implemented as a mock MCP server that simulates real-world systems such as Salesforce or Zendesk. This design makes the system backend-agnostic — the agent does not depend on any specific CRM implementation, and the MCP server can be replaced without modifying agent logic.
 
 ### Three-Tier Security Guardrails
 Security is applied in layers at increasing cost:

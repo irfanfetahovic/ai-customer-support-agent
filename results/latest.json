@@ -15,7 +15,7 @@
       {
         "query": "How long does standard shipping take and what are the delive\u2026",
         "hit": true,
-        "avg_chunk_relevance": 0.8,
+        "avg_chunk_relevance": 0.75,
         "context_sufficiency": 1.0,
         "context_redundancy": 0.0,
         "answer_relevance": 1.0,
@@ -37,7 +37,7 @@
       {
         "query": "What personal data do you collect and how is my privacy prot\u2026",
         "hit": true,
-        "avg_chunk_relevance": 0.675,
+        "avg_chunk_relevance": 0.625,
         "context_sufficiency": 1.0,
         "context_redundancy": 0.0,
         "answer_relevance": 1.0,
@@ -55,13 +55,13 @@
         "answer_completeness": 0.0,
         "faithfulness": 0.0,
         "unsupported_claims": [
-          "The context does not provide any information on how to handle a late order or issues with tracking updates."
+          "The context does not provide any information about what to do if an order is late or if the tracking page is not updating."
         ]
       },
       {
         "query": "My credit card payment was declined at checkout. How do I fi\u2026",
         "hit": true,
-        "avg_chunk_relevance": 0.275,
+        "avg_chunk_relevance": 0.3,
         "context_sufficiency": 0.0,
         "context_redundancy": 0.0,
         "answer_relevance": 0.0,
@@ -129,7 +129,7 @@
       {
         "query": "Only one of my Wireless Earbuds Pro is connecting to my phon\u2026",
         "hit": true,
-        "avg_chunk_relevance": 0.725,
+        "avg_chunk_relevance": 0.7,
         "context_sufficiency": 1.0,
         "context_redundancy": 0.0,
         "answer_relevance": 1.0,
@@ -173,7 +173,7 @@
       {
         "query": "What are the international shipping costs?",
         "hit": true,
-        "avg_chunk_relevance": 0.2,
+        "avg_chunk_relevance": 0.275,
         "context_sufficiency": 0.5,
         "context_redundancy": 0.1,
         "answer_relevance": 0.0,
@@ -204,7 +204,7 @@
         "answer_completeness": 0.0,
         "faithfulness": 0.0,
         "unsupported_claims": [
-          "The context does not provide specific key features of the Smartwatch X. It only mentions its purpose and technical specifications without detailing any features."
+          "The context does not provide specific key features of the Smartwatch X. It only mentions general purposes like health monitoring and fitness tracking without detailing the features."
         ]
       },
       {
@@ -232,14 +232,14 @@
       {
         "query": "What is the battery life of the Wireless Earbuds Pro?",
         "hit": true,
-        "avg_chunk_relevance": 0.0,
+        "avg_chunk_relevance": 0.025,
         "context_sufficiency": 0.0,
         "context_redundancy": 0.0,
         "answer_relevance": 0.0,
         "answer_completeness": 0.0,
         "faithfulness": 0.0,
         "unsupported_claims": [
-          "The battery life of the Wireless Earbuds Pro is not mentioned in the provided context."
+          "The battery life of the Wireless Earbuds Pro is not mentioned in the context."
         ]
       },
       {
@@ -300,16 +300,16 @@
       },
       {
         "scenario": "Out-of-scope boundary test",
-        "avg": 0.76
+        "avg": 1.0
       }
     ],
     "summary": {
-      "resolution": 0.8444444444444444,
+      "resolution": 0.9555555555555555,
       "accuracy": 1.0,
       "tone": 0.9888888888888889,
-      "completeness": 0.9666666666666666,
+      "completeness": 0.9888888888888889,
       "scope_adherence": 1.0,
-      "overall": 0.96
+      "overall": 0.9866666666666667
     }
   }
 }

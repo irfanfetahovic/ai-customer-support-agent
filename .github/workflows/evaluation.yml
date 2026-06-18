@@ -3,7 +3,7 @@ name: Offline Evaluation
 on:
   push:
     branches: [main]
-    paths:
+    paths: # only run when these files change
       - "knowledge-base/**"
       - "mcp_server/**"
       - "scripts/**"
@@ -17,7 +17,7 @@ on:
       - "scripts/**"
       - "notebooks/customer_support.ipynb"
       - "pyproject.toml"
-  workflow_dispatch:
+  workflow_dispatch: # to allow manual triggering of the workflow from the Actions tab
     inputs:
       suite:
         description: "Evaluation suite to run"
@@ -52,14 +52,14 @@ jobs:
         run: pip install -e .
 
       # The FAISS index is not committed to the repo.
-      # Restore a cached index keyed on the knowledge-base content hash so we
+      # This step restores a cached FAISS index keyed on the knowledge-base content hash so we
       # avoid rebuilding (and paying for embedding API calls) on every run.
       - name: Restore FAISS index cache
         id: faiss-cache
         uses: actions/cache@v4
         with:
-          path: faiss_index/
-          key: faiss-index-${{ hashFiles('knowledge-base/**') }}
+          path: faiss_index/ # directory where the FAISS index is stored
+          key: faiss-index-${{ hashFiles('knowledge-base/**') }} # cache key based on the hash of all files in the knowledge-base directory
 
       - name: Run evaluations
         env:
@@ -74,16 +74,17 @@ jobs:
       # Commit results back to the repo so scores are visible without
       # downloading an artifact. Only runs on push to main (not PRs —
       # forks don't have write access).
-      - name: Commit evaluation results
+      - name: Commit and push evaluation results
         if: github.event_name != 'pull_request'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add results/latest.json
+          # commit only if changed
           git diff --cached --quiet || git commit -m "chore: update evaluation results [skip ci]"
           git push
 
-      - name: Upload evaluation results
+      - name: Upload evaluation results # store results as a workflow artifact so they can be downloaded from the Actions tab even if commit fails
         if: always()
         uses: actions/upload-artifact@v4
         with:

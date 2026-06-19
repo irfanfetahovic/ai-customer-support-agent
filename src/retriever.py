@@ -1,3 +1,7 @@
+# This module implements the retrieval phase of a RAG pipeline. 
+# For complex document structures (e.g., heavily formatted PDFs, tables,
+# hierarchical documents), consider LlamaIndex or specialized document parsers.
+
 import re
 from typing import List
 
